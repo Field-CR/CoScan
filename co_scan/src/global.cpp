@@ -1,4 +1,3 @@
-#pragma once
 #include "global.h" // global variables
 
 // cluster compact constraint

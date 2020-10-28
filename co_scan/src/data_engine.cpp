@@ -16,7 +16,7 @@ bool DataEngine::create_connection()
     bzero(&serveraddr, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
     serveraddr.sin_port = htons(PORT);
-    inet_pton(AF_INET, server_ip, &serveraddr.sin_addr);
+    inet_pton(AF_INET, server_ip.data(), &serveraddr.sin_addr);
 
     printf("connecting server...");
     if(connect(sockClient, (struct sockaddr*)&serveraddr, sizeof(serveraddr)) == -1)
@@ -64,7 +64,7 @@ bool DataEngine::getRGBDFromServer()
 {
 
 // test
-    sleep(0.1);
+    usleep(100000);
     stopThread(sockClient);
     create_connection();
 
@@ -78,7 +78,7 @@ getRGBDFromGazebo_begin:
     reply_success = false;
     thread send_task(socketSendThread, sockClient, sendData, 1); // send command
     send_task.detach();
-    while(!send_success) sleep(0.1);
+    while(!send_success) usleep(100000);
     // recive data
     // rgb
     {
@@ -249,7 +249,7 @@ bool DataEngine::getPoseFromServer()
     char pkgData[MAXRECV];
 
 // test
-    sleep(0.1);
+    usleep(100000);
     stopThread(sockClient);
     create_connection();
 
@@ -265,7 +265,7 @@ getPoseFromLinux_begin:
     reply_success = false;
     thread send_task(socketSendThread, sockClient, sendData, 1); // send command
     send_task.detach(); // execute the thread
-    while(!send_success) sleep(0.1);
+    while(!send_success) usleep(100000);
     int n = 0; // recv return code
     int count = 0; // recved data length
     // start to recv data
@@ -554,14 +554,14 @@ void DataEngine::scanSurroundingsCmd()
 bool DataEngine::socket_move_to_views(vector<vector<double>> poses)
 {
 // test
-    sleep(0.1);
+    usleep(100000);
     stopThread(sockClient);
     create_connection();
     // ask to set poses 
     char sendData[1];
     sendData[0] = 'm';
     send(sockClient, sendData, 1, 0);
-    sleep(0.1);
+    usleep(100000);
     // send poses data 
     int data_len = rbt_num * 7 * sizeof(float);
     char* poseData = new char[data_len];
@@ -925,7 +925,7 @@ void DataEngine::findExtraFreeSpace(int rid, cv::Mat depth, vector<float> pose)
                 Eigen::Vector3d p;
                 p[0] = z, p[1] = -x, p[2] = -y; // convert to gazebo camera coord system
                 p = r*p + t; // convert to gazebo world coord system
-                -p[1], -p[2], p[0]; // convert to octomap world coord system
+                // -p[1], -p[2], p[0]; // convert to octomap world coord system
                 int v = (int)((-p[1] - xmin_oc_g) / nodesize)*scale;
                 int u = (int)((zmax_oc_g - p[0]) / nodesize)*scale;
                 if (u < 0)
@@ -1044,7 +1044,7 @@ vector<cv::Point> DataEngine::loadIdealFrustum(Eigen::MatrixXd r, Eigen::Vector3
         Eigen::Vector3d p;
         p[0] = z, p[1] = -x, p[2] = -y; // 转到gazebo的相机坐标系
         p = r*p + t; // 转到gazebo的世界坐标系
-        -p[1], -p[2], p[0]; // 转到octomap的世界坐标系
+        // -p[1], -p[2], p[0]; // 转到octomap的世界坐标系
         double nodesize = map_cellsize;
         int scale = nodesize / map_cellsize;
         int v = (int)((-p[1] - xmin_oc_g) / nodesize)*scale;

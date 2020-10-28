@@ -21,8 +21,8 @@
 // octomap 
 #include <octomap/octomap.h>
 // eigen
-#include "../include/eigen/Eigen/Dense"
-#include "../include/eigen/Eigen/src/Geometry/Quaternion.h"
+#include <Eigen/Dense>
+#include <Eigen/src/Geometry/Quaternion.h>
 // se2
 #include "../include/se2/se2.h"
 // my headers
@@ -113,7 +113,7 @@ public:
 	const int MAXRECV = 10240;
 	const int frame_rows = 480;
 	const int frame_cols = 640;
-	char *server_ip = "192.168.180.128";
+	std::string server_ip = "192.168.180.128";
 	int sockClient;
 	//bool m_sock_success = false;
 	// robot

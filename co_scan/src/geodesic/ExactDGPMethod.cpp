@@ -8,18 +8,12 @@
 //#pragma comment(lib, "opengl32.lib") // dsy: comment out.
 //#pragma comment(lib, "glu32.lib") // dsy: comment out.
 #include <fstream>
+#include <algorithm>
 #include <iterator>
 #include <cassert>
 #include "Parameters.h"
 using namespace std;
 
-// dsy - - -
-#ifndef max
-#define max(a,b)            (((a) > (b)) ? (a) : (b))
-#endif
-#ifndef min
-#define min(a,b)            (((a) < (b)) ? (a) : (b))
-#endif
 /*template<class _BidIt> inline
 void _Reverse(_BidIt _First, _BidIt _Last, bidirectional_iterator_tag)
 {	
@@ -34,13 +28,7 @@ void reverse(_BidIt _First, _BidIt _Last)
 	//_DEBUG_RANGE(_First, _Last);
 	_Reverse(_First._Unchecked(), _Unchecked(_Last), _Iter_cat(_First));
 }*/
-template<class _BidIt> inline
-void reverse(_BidIt _First, _BidIt _Last)
-{	
-	// reverse elements in [_First, _Last), bidirectional iterators
-	for (; _First != _Last && _First != --_Last; ++_First)
-		::std:: iter_swap(_First, _Last);
-}
+
 // dsy - - -
 
 //////////////////////////////////////////////////////////////////////
@@ -148,7 +136,7 @@ vector<EdgePoint> CExactDGPMethod::BacktraceShortestPath(int end) const
 			}
 			else if (proportion >= 0 && proportion <= 1)
 			{
-				proportion = max(proportion, 0);
+				proportion = max(proportion, 0.0);
 				coord = model.GetNew2DCoordinatesByRotatingAroundLeftChildEdge(edgeIndex, coord);
 				edgeIndex = model.Edge(edgeIndex).indexOfLeftEdge;
 				//rightLen = disToAngle;				
@@ -177,8 +165,8 @@ vector<EdgePoint> CExactDGPMethod::BacktraceShortestPath(int end) const
 				else
 				{
 					proportion = model.ProportionOnRightEdgeByImage(edgeIndex, coord, oldProprotion);
-					proportion = max(proportion, 0);
-					proportion = min(proportion, 1);
+					proportion = max(proportion, 0.0);
+					proportion = min(proportion, 1.0);
 					coord = model.GetNew2DCoordinatesByRotatingAroundRightChildEdge(edgeIndex, coord);
 					edgeIndex = model.Edge(edgeIndex).indexOfRightEdge;
 				}

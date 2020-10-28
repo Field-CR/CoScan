@@ -12,7 +12,7 @@
 #include <pthread.h>
 #include "tsp.h"
 
-#pragma comment(lib,"pthreadVC2.lib")   
+// #pragma comment(lib,"pthreadVC2.lib")   
 
 using namespace std;
 

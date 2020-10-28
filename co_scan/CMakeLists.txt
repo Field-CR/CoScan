@@ -1,25 +1,31 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(co_scan)
 
+find_package(catkin_simple REQUIRED)
+catkin_simple()
+
+add_definitions(-std=c++14 -Werror)
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror=unused-result -Werror=sign-compare -Wall  -march=native -Wreorder -Wno-pragma-once-outside-header -Werror -Wunused-value -Wno-unused-variable -Wno-unused-parameter -Wunknown-pragmas -Wunused-label -Wunknown-pragmas")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=unused-result -Werror=sign-compare -Wall -march=native -Wreorder -Wno-pragma-once-outside-header -Werror -Wunused-value -Wno-unused-variable -Wno-unused-parameter -Wunknown-pragmas -Wunused-label -Wunknown-pragmas")
+
+
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
 
-set(OpenCV_DIR /usr/share/OpenCV)
-set(octomap_DIR ../octomap/octomap-devel/lib/cmake/octomap)
-set(CGAL_DIR ../cgal/CGAL-4.9.1/build)
-SET(eigen_INCLUDE_DIRS ./include/eigen)
 #SET( EIGEN_INCLUDE_DIR /usr/include/eigen3 )
 
 find_package(catkin REQUIRED COMPONENTS
+  eigen_catkin
   roscpp
   rospy
   std_msgs
-  octomap REQUIRED
-  OpenCV 
   camera_calibration_parsers
   cv_bridge
-  CGAL REQUIRED
 )
+
+find_package(octomap REQUIRED)
+find_package(CGAL REQUIRED)
+find_package(OpenCV REQUIRED)
 
 catkin_package(
 #  INCLUDE_DIRS include
@@ -31,7 +37,6 @@ catkin_package(
 include_directories(
   ${catkin_INCLUDE_DIRS}
   ${OCTOMAP_INCLUDE_DIRS}
-  ${eigen_INCLUDE_DIRS}
   ${CGAL_INCLUDE_DIRS}
 )
 
@@ -53,6 +58,7 @@ src/tsp/threads.cpp
 src/tsp/MyThread.cpp
 src/tsp/twoOpt.cpp
 )
+
 target_link_libraries(co_scan 
 ${catkin_LIBRARIES} 
 ${OCTOMAP_LIBRARIES}
@@ -65,6 +71,7 @@ navigation
 #opencv_highgui
 ${OpenCV_LIBS}
 )
+
 add_executable(poly_diff src/polygon_diff.cpp src/global.cpp)
 target_link_libraries(poly_diff 
 CGAL::CGAL CGAL::CGAL_Core

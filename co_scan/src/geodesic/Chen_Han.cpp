@@ -3,15 +3,6 @@
 //////////////////////////////////////////////////////////////////////
 #include "Chen_Han.h"
 
-// dsy
-#ifndef max
-#define max(a,b)            (((a) > (b)) ? (a) : (b))
-#endif
-#ifndef min
-#define min(a,b)            (((a) < (b)) ? (a) : (b))
-#endif
-// dsy
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -167,7 +158,7 @@ bool CChen_Han::UpdateTreeDepthBackWithChoice()
 		{
 			const InfoAtVertex& infoOfHeadElemOfPseudoSources = m_InfoAtVertices[m_QueueForPseudoSources.front().indexOfVert];
 			m_depthOfResultingTree = max(m_depthOfResultingTree, 
-				infoOfHeadElemOfPseudoSources.levelOnSequenceTree);
+			static_cast<int64_t>	(infoOfHeadElemOfPseudoSources.levelOnSequenceTree));
 			fFromQueueOfPseudoSources = true;
 		}
 	}
@@ -177,7 +168,7 @@ bool CChen_Han::UpdateTreeDepthBackWithChoice()
 		{
 			const Window& infoOfHeadElemOfWindows = *m_QueueForWindows.front().pWindow;
 			m_depthOfResultingTree = max(m_depthOfResultingTree,
-				infoOfHeadElemOfWindows.levelOnSequenceTree);
+				static_cast<int64_t>(infoOfHeadElemOfWindows.levelOnSequenceTree));
 			fFromQueueOfPseudoSources = false;
 		}
 		else
@@ -188,13 +179,13 @@ bool CChen_Han::UpdateTreeDepthBackWithChoice()
 				infoOfHeadElemOfWindows.levelOnSequenceTree)
 			{
 				m_depthOfResultingTree = max(m_depthOfResultingTree,
-					infoOfHeadElemOfPseudoSources.levelOnSequenceTree);
+					static_cast<int64_t>(	infoOfHeadElemOfPseudoSources.levelOnSequenceTree));
 				fFromQueueOfPseudoSources = true;
 			}
 			else
 			{
 				m_depthOfResultingTree = max(m_depthOfResultingTree,
-					infoOfHeadElemOfWindows.levelOnSequenceTree);
+				static_cast<int64_t>(	infoOfHeadElemOfWindows.levelOnSequenceTree));
 				fFromQueueOfPseudoSources = false;
 			}
 		}
@@ -304,7 +295,7 @@ void CChen_Han::ComputeChildrenOfPseudoSourceFromPseudoSource(int indexOfParentV
 			propPlus = 0;
 		}
 		else if (angleSumPlus - M_PI < devirationAngle
-			|| abs(anglePlus - model.Neigh(indexOfParentVertex)[indexPlus].second) 
+			|| std::abs(anglePlus - model.Neigh(indexOfParentVertex)[indexPlus].second) 
 			< devirationAngle
 			|| model.Neigh(indexOfParentVertex)[indexPlus].second
 			> M_PI - devirationAngle)
@@ -328,8 +319,8 @@ void CChen_Han::ComputeChildrenOfPseudoSourceFromPseudoSource(int indexOfParentV
 			//	cerr << "propPlus " << __LINE__ << ": "  << propPlus << endl;
 			//}
 		}
-		propPlus = max(0, propPlus);
-		propPlus = min(1, propPlus);
+		propPlus = max(0.0, propPlus);
+		propPlus = min(1.0, propPlus);
 	}
 
 	double angleMinus = angleSumMinus - M_PI;
@@ -341,7 +332,7 @@ void CChen_Han::ComputeChildrenOfPseudoSourceFromPseudoSource(int indexOfParentV
 			propMinus = 1;
 		}
 		else if (angleSumMinus - M_PI < devirationAngle
-			|| abs(angleSumMinus - M_PI - model.Neigh(indexOfParentVertex)[indexMinus].second) 
+			|| std::abs(angleSumMinus - M_PI - model.Neigh(indexOfParentVertex)[indexMinus].second) 
 			< devirationAngle
 			|| model.Neigh(indexOfParentVertex)[indexMinus].second
 			> M_PI - devirationAngle)
@@ -364,8 +355,8 @@ void CChen_Han::ComputeChildrenOfPseudoSourceFromPseudoSource(int indexOfParentV
 			//	cerr << "propMinus " << __LINE__ << ": "  << propMinus << endl;
 			//}
 		}
-		propMinus = max(0, propMinus);
-		propMinus = min(1, propMinus);
+		propMinus = max(0.0, propMinus);
+		propMinus = min(1.0, propMinus);
 	}
 #endif
 
@@ -446,7 +437,7 @@ void CChen_Han::ComputeChildrenOfPseudoSourceFromWindow(int indexOfParentVertex)
 			propMinus = 1;
 		}
 		else if (angleSumL - M_PI < devirationAngle
-			|| abs(angleRemaining - model.Neigh(indexOfParentVertex)[indexMinus].second)
+			|| std::abs(angleRemaining - model.Neigh(indexOfParentVertex)[indexMinus].second)
 			< devirationAngle
 			|| model.Neigh(indexOfParentVertex)[indexMinus].second 
 			> M_PI - devirationAngle)
@@ -473,8 +464,8 @@ void CChen_Han::ComputeChildrenOfPseudoSourceFromWindow(int indexOfParentVertex)
 			//}
 		}
 
-		propMinus = max(0, propMinus);
-		propMinus = min(1, propMinus);
+		propMinus = max(0.0, propMinus);
+		propMinus = min(1.0, propMinus);
 	}
 	
 	int rightEdge = model.Neigh(indexOfParentVertex)[indexPlus].first;
@@ -487,7 +478,7 @@ void CChen_Han::ComputeChildrenOfPseudoSourceFromWindow(int indexOfParentVertex)
 			propPlus = 0;
 		}
 		else if (angleSumR - M_PI < devirationAngle
-			|| abs(angleRemaining) < devirationAngle
+			|| std::abs(angleRemaining) < devirationAngle
 			|| model.Neigh(indexOfParentVertex)[indexPlus].second 
 			> M_PI - devirationAngle)
 		{
@@ -513,8 +504,8 @@ void CChen_Han::ComputeChildrenOfPseudoSourceFromWindow(int indexOfParentVertex)
 			//}
 		}
 
-		propPlus = max(0, propPlus);
-		propPlus = min(1, propPlus);
+		propPlus = max(0.0, propPlus);
+		propPlus = min(1.0, propPlus);
 	}
 
 #endif
@@ -701,10 +692,10 @@ void CChen_Han::ComputeTheOnlyLeftChild(const Window& w)
 	quoteW.pWindow = new Window;
 	quoteW.pWindow->proportions[0] = model.ProportionOnLeftEdgeByImage(w.indexOfCurEdge,
 		w.coordOfPseudoSource, w.proportions[0]) - 1e-4;
-	quoteW.pWindow->proportions[0] = max(0, quoteW.pWindow->proportions[0]);
+	quoteW.pWindow->proportions[0] = max(0.0, quoteW.pWindow->proportions[0]);
 	quoteW.pWindow->proportions[1] = model.ProportionOnLeftEdgeByImage(w.indexOfCurEdge,
 		w.coordOfPseudoSource, w.proportions[1]) + 1e-4;
-	quoteW.pWindow->proportions[1] = min(1, quoteW.pWindow->proportions[1]);
+	quoteW.pWindow->proportions[1] = min(1.0, quoteW.pWindow->proportions[1]);
 	if (IsTooNarrowWindow(*quoteW.pWindow))
 	{
 		delete quoteW.pWindow;
@@ -737,10 +728,10 @@ void CChen_Han::ComputeTheOnlyRightChild(const Window& w)
 	quoteW.pWindow = new Window;
 	quoteW.pWindow->proportions[0] = model.ProportionOnRightEdgeByImage(w.indexOfCurEdge,
 		w.coordOfPseudoSource, w.proportions[0]) - 1e-4;
-	quoteW.pWindow->proportions[0] = max(0, quoteW.pWindow->proportions[0]);
+	quoteW.pWindow->proportions[0] = max(0.0, quoteW.pWindow->proportions[0]);
 	quoteW.pWindow->proportions[1] = model.ProportionOnRightEdgeByImage(w.indexOfCurEdge,
 		w.coordOfPseudoSource, w.proportions[1]) + 1e-4;
-	quoteW.pWindow->proportions[1] = min(1, quoteW.pWindow->proportions[1]);
+	quoteW.pWindow->proportions[1] = min(1.0, quoteW.pWindow->proportions[1]);
 	if (IsTooNarrowWindow(*quoteW.pWindow))
 	{
 		delete quoteW.pWindow;
@@ -772,7 +763,7 @@ void CChen_Han::ComputeTheOnlyLeftTrimmedChild(const Window& w)
 	quoteW.pWindow = new Window;
 	quoteW.pWindow->proportions[0] = model.ProportionOnLeftEdgeByImage(w.indexOfCurEdge,
 		w.coordOfPseudoSource, w.proportions[0]) - 1e-4;
-	quoteW.pWindow->proportions[0] = max(0, quoteW.pWindow->proportions[0]);
+	quoteW.pWindow->proportions[0] = max(0.0, quoteW.pWindow->proportions[0]);
 	quoteW.pWindow->proportions[1] = 1;
 	if (IsTooNarrowWindow(*quoteW.pWindow))
 	{
@@ -806,7 +797,7 @@ void CChen_Han::ComputeTheOnlyRightTrimmedChild(const Window& w)
 	quoteW.pWindow->proportions[0] = 0;
 	quoteW.pWindow->proportions[1] = model.ProportionOnRightEdgeByImage(w.indexOfCurEdge,
 		w.coordOfPseudoSource, w.proportions[1]) + 1e-4;
-	quoteW.pWindow->proportions[1] = min(1, quoteW.pWindow->proportions[1]);
+	quoteW.pWindow->proportions[1] = min(1.0, quoteW.pWindow->proportions[1]);
 	if (IsTooNarrowWindow(*quoteW.pWindow))
 	{
 		delete quoteW.pWindow;
@@ -838,7 +829,7 @@ void CChen_Han::ComputeLeftTrimmedChildWithParent(const Window& w)
 	quoteW.pWindow = new Window;
 	quoteW.pWindow->proportions[0] = model.ProportionOnLeftEdgeByImage(w.indexOfCurEdge,
 		w.coordOfPseudoSource, w.proportions[0]) - 1e-4;
-	quoteW.pWindow->proportions[0] = max(0, quoteW.pWindow->proportions[0]);
+	quoteW.pWindow->proportions[0] = max(0.0, quoteW.pWindow->proportions[0]);
 	quoteW.pWindow->proportions[1] = 1;
 	if (IsTooNarrowWindow(*quoteW.pWindow))
 	{
@@ -873,7 +864,7 @@ void CChen_Han::ComputeRightTrimmedChildWithParent(const Window& w)
 	quoteW.pWindow->proportions[0] = 0;
 	quoteW.pWindow->proportions[1] = model.ProportionOnRightEdgeByImage(w.indexOfCurEdge,
 		w.coordOfPseudoSource, w.proportions[1]) + 1e-4;
-	quoteW.pWindow->proportions[1] = min(1, quoteW.pWindow->proportions[1]);
+	quoteW.pWindow->proportions[1] = min(1.0, quoteW.pWindow->proportions[1]);
 	//quoteW.pWindow->proportions[1] = max(quoteW.pWindow->proportions[1], quoteW.pWindow->proportions[0]);
 	if (IsTooNarrowWindow(*quoteW.pWindow))
 	{

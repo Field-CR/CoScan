@@ -26,8 +26,8 @@
 
 #pragma once
 
-#include "../eigen/Eigen/Core"
-#include "../eigen/Eigen/Geometry"
+#include <Eigen/Core>
+#include <Eigen/Geometry>
 
 const double empty_angle = 9;
 

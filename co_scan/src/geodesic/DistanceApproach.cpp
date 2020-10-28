@@ -2,6 +2,7 @@
 //#include <Windows.h>
 #include <cfloat> // dsy: DBL_MAX
 #include <iostream>
+#include <algorithm>
 using namespace std;
 CDistanceApproach::CDistanceApproach(const CRichModel& model, int source) : model(model)
 {

@@ -398,7 +398,7 @@ Pwh_list_2 Navigation::differenceCGALExactKernel(Polygon_with_holes_2 domain, Po
 	ofs.clear();
 	ofs.close();
 	// difference
-	system(poly_diff.data());
+	int sys=system(poly_diff.data());
 	// result 
 	int rtn;
 	ifs.open(communicateFile);
@@ -425,7 +425,7 @@ Pwh_list_2 Navigation::differenceCGALExactKernel(Polygon_with_holes_2 domain, Po
 		ofs << -1 << endl;
 		ofs.clear();
 		ofs.close();
-		system(poly_diff.data());
+		int sys=system(poly_diff.data());
 		ifs.open(communicateFile);
 		ifs >> rtn;
 		ifs.clear();
@@ -1159,7 +1159,7 @@ vector<int> Navigation::preprocess_frontiers(Polygon_2 outer, vector<Polygon_2> 
 			if (already_explored)
 			{
 				visible = false;
-				err = 'already explored.';
+				err = "already explored.";
 			}
 		}
 

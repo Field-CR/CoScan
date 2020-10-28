@@ -651,7 +651,7 @@ vector<Cluster> DiscreteSolver::ClusterTargets(int mode)
 			while (m_tid_cid_d == 0)
 			{
 				cerr << "memory error, re assign memory..." << endl;
-				sleep(0.1);
+				usleep(100000);
 				m_tid_cid_d = new double*[dRange];
 			}
 			for (int tid = 0; tid < dRange; tid++)
@@ -660,7 +660,7 @@ vector<Cluster> DiscreteSolver::ClusterTargets(int mode)
 				while (m_tid_cid_d[tid] == 0)
 				{
 					cerr << "memory error, re assign memory..." << endl;
-					sleep(0.1);
+					usleep(100000);
 					m_tid_cid_d[tid] = new double[dRange];
 				}
 			}

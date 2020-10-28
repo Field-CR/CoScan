@@ -6,7 +6,7 @@
 #include <iostream>
 #define _USE_MATH_DEFINES
 #include "Parameters.h"
-#include "../../include/eigen/Eigen/Dense"
+#include <Eigen/Dense>
 //#include <Windows.h>
 using namespace std;
 

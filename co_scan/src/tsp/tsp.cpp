@@ -1,4 +1,3 @@
-#pragma once
 
 #include "tsp.h"
 #include <float.h>
